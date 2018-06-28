@@ -1,0 +1,36 @@
+{
+  "name": "fullstack_proj",
+  "version": "1.0.0",
+  "description": "location based video chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanketshahc/MetaGeographic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanketshahc/MetaGeographic/issues"
+  },
+  "homepage": "https://github.com/sanketshahc/MetaGeographic#readme",
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "install": "^0.12.1",
+    "npm": "^6.1.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "pg-promise": "^8.4.4",
+    "session-file-store": "^1.2.0"
+  }
+}
