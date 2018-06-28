@@ -9,6 +9,9 @@ const interfaceID = {
 }
 const db = pgp(interfaceID);
 
+
+
+
 // #1 Add user to db with whatever data is return from fb
 function addUser(userProfile){
     return db.one("insert into users (name,propic,isloggedin,idfb) values ($1, $2, $3, $4) returning id", [userProfile.displayName,userProfile.photos[0].value,true,userProfile.id])
@@ -21,7 +24,12 @@ function loggedOut(id){
     return db.one("update users set isloggedout = false where id=$1", [id])
 }
 
+function checkUser(id){
+    return db.oneOrNone("select * from users where idfb = $1", [id])
+}
+
 module.exports = {
     addUser,
-    loggedOut
+    loggedOut,
+    checkUser
 }

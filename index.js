@@ -1,9 +1,5 @@
 // nodemon command not found! wtf?\
-// what is the id string returned from fb? is that just a session id or something to store on db
-//   if we're writing that to the db, then id on table prob shouldn't be serialized.
-// or just have 2 fields...
-// getting warning on host for db.js
-// db not working
+// how would i handle different cases of authentication/database
 
 
 const dotenv = require('dotenv');
@@ -27,6 +23,14 @@ app.set('view engine', '.hbs');
 setupAuth(app);
 
 //### eventually export routes from a routes.js file
+
+app.get('/signup', (req,res,next)=>{
+    res.render('signup');
+})
+
+app.get('/', ensureAuthenticated, (req,res,next)=>{
+    res.render('home');
+})
 
 app.listen(8000,()=>{
     console.log('server up')

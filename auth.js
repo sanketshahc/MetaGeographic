@@ -27,16 +27,29 @@ const setupAuth = (app) => {
     callbackURL: "http://localhost:8000/facebook/auth",
     profileFields: ['id','displayName','gender','picture.type(large)']
 }, (accessToken, refreshToken, profile, done) => {
-    console.log('this is the profile')
-    console.log(profile)
+    console.log('retrieved profile object')
     // add user to db
-    dbx.addUser(profile)
-        .then(()=>{
-            return done(null, profile);
-        })
+    let idfb = profile.id;
+    dbx.checkUser(idfb)
+        .then((user)=>{
+            if (user) {
+                console.log('user exists:')
+                console.log('user:'+ user)
+                return done(null, profile);
+            }
+            else {
+                dbx.addUser(profile)
+                    .then(()=>{
+                        console.log('new user added')
+                        return done(null, profile);
+                    })
+                    .catch(console.log)
+            }
+        })        
         .catch(console.log)
+    }));
 
-
+    
     // // TODO: replace this with code that finds the user
     // // in the database.
     // let theUser = users.find(u => u.id === profile.id);
@@ -47,7 +60,6 @@ const setupAuth = (app) => {
     //   return done({ message: 'That totally did not work'}, null);
     // }
 
-  }));
 
 
   // #4 call passport.serializeUser
@@ -107,7 +119,7 @@ const setupAuth = (app) => {
   // actually said it was ok.
   // The actual route handler is just going to redirect us to the home page.
   app.get('/facebook/auth',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    passport.authenticate('facebook', {failureRedirect: '/login' }),
     (req, res) => {
       // if you don't have your own route handler after the passport.authenticate middleware
       // then you get stuck in the infinite loop
@@ -141,7 +153,7 @@ const ensureAuthenticated = (req, res, next) => {
 
   console.log('clearly, they are not authenticated');
   // denied. redirect to login
-  res.redirect('/login');
+  res.redirect('/signup');
 }
 
 // Our default export is the `setupAuth` function.
