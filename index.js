@@ -29,7 +29,15 @@ app.get('/signup', (req,res,next)=>{
 })
 
 app.get('/', ensureAuthenticated, (req,res,next)=>{
-    res.render('home');
+    let idfb = req.user;
+    users.checkUser(idfb)
+        .then((user)=>{
+            res.render('home',{
+                name: user.name,
+                propic: user.propic
+            });
+        })
+        .catch(console.log)
 })
 
 app.listen(8000,()=>{

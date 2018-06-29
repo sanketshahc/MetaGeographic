@@ -28,6 +28,7 @@ function checkUser(id){
     return db.oneOrNone("select * from users where idfb = $1", [id])
 }
 
+
 module.exports = {
     addUser,
     loggedOut,

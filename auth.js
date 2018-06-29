@@ -2,7 +2,7 @@ const passport = require('passport');
 // const GithubStrategy = require('passport-github').Strategy;
 const FBStrategy = require('passport-facebook').Strategy
 const session = require('express-session');
-const dbx = require('./db');
+const users = require('./db');
 var FileStore = require('session-file-store')(session);
 
 // const cookieParser = require('cookie-parser')
@@ -30,7 +30,7 @@ const setupAuth = (app) => {
     console.log('retrieved profile object')
     // add user to db
     let idfb = profile.id;
-    dbx.checkUser(idfb)
+    users.checkUser(idfb)
         .then((user)=>{
             if (user) {
                 console.log('user exists:')
@@ -38,7 +38,7 @@ const setupAuth = (app) => {
                 return done(null, profile);
             }
             else {
-                dbx.addUser(profile)
+                users.addUser(profile)
                     .then(()=>{
                         console.log('new user added')
                         return done(null, profile);

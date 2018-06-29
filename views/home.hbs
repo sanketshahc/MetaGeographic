@@ -1,3 +1,17 @@
-<p>this is home!</p>
-
-<a href="/logout">Logout</a>
+<div class="d-flex flex-column justify-content-around align-items-center">
+    <img src="{{propic}}" class="img-fluid rounded my-3 mt-5" alt="propic">
+    <h2>{{name}}</h2>
+    <hr class="w-25 my-1">
+    <form action="/main" method="POST" class="my-2">
+        <div class="form-group">
+            <label class="h6" for="status">I'm looking to/for:</label>
+            <input type="text" class="form-control" name="status" id="status" aria-describedby="helpId" placeholder="ie. code stuff">
+            <small id="helpId" class="form-text text-muted">Required! Helps others decide to chat or not</small>
+        </div>
+        {{!-- will need javascript to show/hide --}}
+        <button type="submit" class="btn btn-success btn-lg w-100">Go!</button>
+    </form>
+    <div class="my-2">
+        <a class="text-secondary" href="/logout">Logout</a>
+    </div> 
+</div>
