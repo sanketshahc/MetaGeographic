@@ -21,10 +21,10 @@ const setupAuth = (app) => {
   }));
 
   // #3 set up passport strategy
-  passport.use(new FBStrategy({
+ var strategy = new FBStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:8000/facebook/auth",
+    callbackURL: "https://10.150.40.196.xip.io/facebook/auth",
     profileFields: ['id','displayName','gender','email','picture.type(large)']
 }, (accessToken, refreshToken, profile, done) => {
     console.log('retrieved profile object')
@@ -47,7 +47,17 @@ const setupAuth = (app) => {
             }
         })        
         .catch(console.log)
-    }));
+    })
+  // var HttpsProxyAgent = require('https-proxy-agent');
+  // // if (process.env['https://10.150.40.196.xip.io']) {
+  // var httpsProxyAgent = new HttpsProxyAgent('https://10.150.40.196.xip.io');
+  // strategy._oauth2.setAgent(httpsProxyAgent)
+// };
+    console.log('LOOK:',strategy._oauth2)
+  //   options.agent = httpsProxyAgent;
+
+  // this._executeRequest( http_library, options, post_body, callback );
+  passport.use(strategy);
 
     
     // // TODO: replace this with code that finds the user
@@ -167,3 +177,22 @@ module.exports = setupAuth;
 // That gets pulled in like so:
 // const ensureAuthenticated = require('../auth').ensureAuthenticated;
 module.exports.ensureAuthenticated = ensureAuthenticated;
+
+
+// var strategy = new OAuth2Strategy({
+//   authorizationURL: 'https://www.example.com/oauth2/authorize',
+//   tokenURL: 'https://www.example.com/oauth2/token',
+//   clientID: EXAMPLE_CLIENT_ID,
+//   clientSecret: EXAMPLE_CLIENT_SECRET,
+//   callbackURL: "http://localhost:3000/auth/example/callback"
+// }, function(accessToken, refreshToken, profile, cb) {
+//   User.findOrCreate({ exampleId: profile.id }, function (err, user) {
+//     return cb(err, user);
+//   });
+// });
+// var HttpsProxyAgent = require('https-proxy-agent');
+// if (process.env['https_proxy']) {
+// var httpsProxyAgent = new HttpsProxyAgent(process.env['https_proxy']);
+// strategy._oauth2.setAgent(httpsProxyAgent);
+// }
+// passport.use(strategy);
