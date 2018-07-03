@@ -25,7 +25,7 @@ const setupAuth = (app) => {
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: "http://localhost:8000/facebook/auth",
-    profileFields: ['id','displayName','gender','picture.type(large)']
+    profileFields: ['id','displayName','gender','email','picture.type(large)']
 }, (accessToken, refreshToken, profile, done) => {
     console.log('retrieved profile object')
     // add user to db

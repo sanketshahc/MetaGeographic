@@ -28,16 +28,34 @@ app.get('/signup', (req,res,next)=>{
     res.render('signup');
 })
 
-app.get('/', ensureAuthenticated, (req,res,next)=>{
+app.use(ensureAuthenticated, (req,res,next)=>{
+        next() 
+    })
+
+app.get('/', (req,res,next)=>{
+    // console.log('USER:'+req.user)
     let idfb = req.user;
+    // res.send('user home')
     users.checkUser(idfb)
         .then((user)=>{
             res.render('home',{
                 name: user.name,
                 propic: user.propic
             });
-        })
-        .catch(console.log)
+         })
+         .catch(console.log)
+})
+
+app.post('/main', (req,res,next)=>{
+    res.redirect('/main')
+})
+
+app.get('/main', (req,res,next)=>{
+    res.send('main page')
+})
+
+app.get('/*',(req,res,next)=>{
+    res.redirect('/')
 })
 
 app.listen(8000,()=>{
