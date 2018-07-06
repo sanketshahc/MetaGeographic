@@ -20,7 +20,7 @@ const setupAuth = (app) => {
     store: new FileStore() 
   }));
 
-  // #3 set up passport strategy
+// #3 set up passport strategy
  var strategy = new FBStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -53,10 +53,9 @@ const setupAuth = (app) => {
   // var httpsProxyAgent = new HttpsProxyAgent('https://10.150.40.196.xip.io');
   // strategy._oauth2.setAgent(httpsProxyAgent)
 // };
-    console.log('LOOK:',strategy._oauth2)
-  //   options.agent = httpsProxyAgent;
-
-  // this._executeRequest( http_library, options, post_body, callback );
+  console.log('oAuth:',strategy._oauth2)
+//   options.agent = httpsProxyAgent;
+// this._executeRequest( http_library, options, post_body, callback );
   passport.use(strategy);
 
     
@@ -179,20 +178,3 @@ module.exports = setupAuth;
 module.exports.ensureAuthenticated = ensureAuthenticated;
 
 
-// var strategy = new OAuth2Strategy({
-//   authorizationURL: 'https://www.example.com/oauth2/authorize',
-//   tokenURL: 'https://www.example.com/oauth2/token',
-//   clientID: EXAMPLE_CLIENT_ID,
-//   clientSecret: EXAMPLE_CLIENT_SECRET,
-//   callbackURL: "http://localhost:3000/auth/example/callback"
-// }, function(accessToken, refreshToken, profile, cb) {
-//   User.findOrCreate({ exampleId: profile.id }, function (err, user) {
-//     return cb(err, user);
-//   });
-// });
-// var HttpsProxyAgent = require('https-proxy-agent');
-// if (process.env['https_proxy']) {
-// var httpsProxyAgent = new HttpsProxyAgent(process.env['https_proxy']);
-// strategy._oauth2.setAgent(httpsProxyAgent);
-// }
-// passport.use(strategy);

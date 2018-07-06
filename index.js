@@ -1,11 +1,5 @@
 // nodemon command not found! wtf?\
 // how would i handle different cases of authentication/database
-
-
-
-
-
-
 // app.get('/', function(req, res) {
 //     res.sendFile(path.join(__dirname + '/index.html'));
 //   });
@@ -41,8 +35,6 @@ app.set('view engine', '.hbs');
 
 setupAuth(app);
 
-//--
-
 
 //### eventually export routes from a routes.js file
 
@@ -69,16 +61,27 @@ app.get('/', (req,res,next)=>{
 })
 
 app.post('/main', (req,res,next)=>{
-    res.redirect('/main')
-})
+    let idfb = req.user;
+    console.log('status',req.body.status)
+    let status = req.body.status;
+    users.changeStatus(idfb, status)
+        .then(res.redirect('/main'))
+        .catch(console.log)
+})  
+    
 
 app.get('/main', (req,res,next)=>{
-    res.send('main page')
+    users.allLoggedin()
+        .then(element=>{res.send(element)})
+    // res.send('main page')
+    // send mainpage and a list of all logged in users.
 })
 
 app.get('/*',(req,res,next)=>{
     res.redirect('/')
 })
+
+
 
 // app.listen(8000,()=>{
 //     console.log('server up')
