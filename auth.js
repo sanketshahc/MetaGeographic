@@ -4,12 +4,18 @@ const FBStrategy = require('passport-facebook').Strategy
 const session = require('express-session');
 const users = require('./db');
 var FileStore = require('session-file-store')(session);
-
+const sharedSession = require("express-socket.io-session")(session({
+  secret: 'whatever',
+  resave: true,
+  saveUninitialized: true,
+  store: new FileStore()
+}));
 // const cookieParser = require('cookie-parser')
 // const users = require('./users');
 
 // Accept the express `app` instance as an arg
 // That way, we don't declare it here.
+
 const setupAuth = (app) => {
 
   // #2 set up session middleware
@@ -20,11 +26,11 @@ const setupAuth = (app) => {
     store: new FileStore() 
   }));
 
-// #3 set up passport strategy
+  // #3 set up passport strategy
  var strategy = new FBStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "https://10.150.40.196.xip.io/facebook/auth",
+    callbackURL: "https://sanketshah.local/facebook/auth",
     profileFields: ['id','displayName','gender','email','picture.type(large)']
 }, (accessToken, refreshToken, profile, done) => {
     console.log('retrieved profile object')
@@ -58,7 +64,6 @@ const setupAuth = (app) => {
 // this._executeRequest( http_library, options, post_body, callback );
   passport.use(strategy);
 
-    
     // // TODO: replace this with code that finds the user
     // // in the database.
     // let theUser = users.find(u => u.id === profile.id);
@@ -177,4 +182,5 @@ module.exports = setupAuth;
 // const ensureAuthenticated = require('../auth').ensureAuthenticated;
 module.exports.ensureAuthenticated = ensureAuthenticated;
 
+module.exports.sharedSession = sharedSession;
 
