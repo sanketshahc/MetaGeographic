@@ -1,0 +1,53 @@
+html {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+
+body {
+  background-color: #333;
+  font-family: 'Roboto', 'Open Sans', 'Lucida Grande', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  color: #fff;
+}
+
+#videos {
+  font-size: 0; /* to fix whitespace/scrollbars problem */
+  height: 100%;
+  position: absolute;
+  transition: all 1s;
+  width: 100%;
+}
+
+#localVideo {
+  border: 1px solid gray;
+  bottom: 20px;
+  left: 20px;
+  /* video div is flipped horizontally when active*/
+  max-height: 17%;
+  max-width: 17%;
+  /* opacity: 0; */
+  position: absolute;
+  transition: opacity 1s;
+  z-index: 2;
+}
+
+#remoteVideo {
+  display: block;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;  /* no letterboxing */
+  /* opacity: 0; */
+  position: absolute;
+ 
+  transition: opacity 1s;
+  width: 100%;
+  opacity: 1;
+  z-index: 1;
+}
+
+

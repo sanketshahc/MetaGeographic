@@ -5,7 +5,7 @@
     <form action="/main" method="POST" class="my-2">
         <div class="form-group">
             <label class="h5" for="status">I'm looking to/for:</label>
-            <input type="text" class="form-control" name="status" id="status" aria-describedby="helpId" placeholder="ie. code stuff">
+            <input required maxlength="50" type="text" class="form-control" name="status" id="status" aria-describedby="helpId" placeholder="ie. code stuff">
             <small id="helpId" class="form-text text-muted">Required! Helps others decide to chat or not</small>
         </div>
         {{!-- will need javascript to show/hide --}}

@@ -151,7 +151,7 @@ socketIO.on("connection", (socket)=> {
             }
         room = openRoom;
         // }
-    
+        // socket.id necessary to send to client? prob no
         const joinRoomToFill = (name) => {
             log('Client ID ' + socket.id + ' joined room ' + name);
             socketIO.sockets.in(name).emit('join', name);
