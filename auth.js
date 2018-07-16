@@ -59,7 +59,7 @@ const setupAuth = (app) => {
   // var httpsProxyAgent = new HttpsProxyAgent('https://10.150.40.196.xip.io');
   // strategy._oauth2.setAgent(httpsProxyAgent)
 // };
-  console.log('oAuth:',strategy._oauth2)
+  console.log('oAuth:','clientID:',strategy._oauth2._clientId)
 //   options.agent = httpsProxyAgent;
 // this._executeRequest( http_library, options, post_body, callback );
   passport.use(strategy);

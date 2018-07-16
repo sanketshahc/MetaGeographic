@@ -21,8 +21,9 @@ var sdpConstraints = {
 };
 
 // socket in to server
-var socket = io.connect('https://sanketshah.local:443');
-
+var socket = io.connect('https://sanketshah.local:443/main');
+    socket.emit('create or join');
+    console.log(socket.id+'  Attempted to create or join room');
     // no room assigned now
 
     // assuming client can also listen for 'connect,'
@@ -39,12 +40,12 @@ var socket = io.connect('https://sanketshah.local:443');
     //     console.log('Attempted to create or  join room', room);
     //   }                                                                        
     
-// what we need here is an event listener for the push of 'go'
-document.querySelector("form").addEventListener("submit",()=>{
-    socket.emit('create or join');
-    console.log('Attempted to create or  join room');
-    } 
-)
+// // what we need here is an event listener for the push of 'go'
+// document.querySelector("form").addEventListener("submit",()=>{
+//     socket.emit('create or join');
+//     console.log('Attempted to create or  join room');
+//     } 
+// )
 // room full message...prob not necessary now
 
 //  socket.on('full', (room) => {
@@ -53,9 +54,11 @@ document.querySelector("form").addEventListener("submit",()=>{
 
 // listen for event "created", which i assume is a server side event,
 // and then set a set client who created it as initiator
+var curr;
 socket.on('created', (room) => {
     console.log('Created room ' + room);
     isInitiator = true;
+    curr = room;
 }); 
 
 // join event callback
@@ -63,12 +66,15 @@ socket.on('join', (room) =>{
     console.log('Another peer made a request to join room ' + room);
     console.log('This peer is the initiator of room ' + room + '!');
     isChannelReady = true;
+    curr = room;
 });
 
 // joined event callback
 socket.on('joined', (room) => {
     console.log('joined: ' + room);
     isChannelReady = true;
+    curr = room;
+    // console.log('did curr? ', curr)
 });
 
 // log event from server, to add server console.logs to the client.
@@ -77,7 +83,7 @@ socket.on('log', (array) => {
 });
 
 /*/////////////////////////////////
-    Code below is largely written by Google Inc, as a tutorial
+    Code below is written by Google Inc, as a tutorial for WebRTC.
     Copyright 2016 Google Inc.
     Licensed under the Apache License, Version 2.0 (the "License");
 
@@ -90,7 +96,8 @@ socket.on('log', (array) => {
 // the server in thise case forwards to all other users.
 function sendMessage(message) {
     console.log('Client sending message: ', message);
-    socket.emit('message', message);
+    console.log('curr', curr)
+    socket.emit('message', message, curr);
   }
   
   // listend for different message-received types. if the client receives the message 
@@ -180,11 +187,11 @@ var constraints = {
 console.log('Getting user media with constraints', constraints);
 
   // requesting turn server if server is not localhost. 
-if (location.hostname !== 'localhost') {
-    requestTurn(
-        'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
-    );
-}
+// if (location.hostname !== 'localhost') {
+//     requestTurn(
+//         'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
+//     );
+// }
   
   // when function is called, log some variables and assuming 
   // some basic checks, like, is everyone here?, create a peer
@@ -289,34 +296,34 @@ function onCreateSessionDescriptionError(error) {
 }
   
   // turn server setup formula
-function requestTurn(turnURL) {
-    var turnExists = false;
-    for (var i in pcConfig.iceServers) {
-        if (pcConfig.iceServers[i].urls.substr(0, 5) === 'turn:') {
-            turnExists = true;
-            turnReady = true;
-            break;
-        }
-    }
-    if (!turnExists) {
-        console.log('Getting TURN server from ', turnURL);
-        // No TURN server. Get one from computeengineondemand.appspot.com:
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-            var turnServer = JSON.parse(xhr.responseText);
-            console.log('Got TURN server: ', turnServer);
-            pcConfig.iceServers.push({
-                'urls': 'turn:' + turnServer.username + '@' + turnServer.turn,
-                'credential': turnServer.password
-            });
-            turnReady = true;
-            }
-        };
-        xhr.open('GET', turnURL, true);
-        xhr.send();
-    }
-}
+// function requestTurn(turnURL) {
+//     var turnExists = false;
+//     for (var i in pcConfig.iceServers) {
+//         if (pcConfig.iceServers[i].urls.substr(0, 5) === 'turn:') {
+//             turnExists = true;
+//             turnReady = true;
+//             break;
+//         }
+//     }
+//     if (!turnExists) {
+//         console.log('Getting TURN server from ', turnURL);
+//         // No TURN server. Get one from computeengineondemand.appspot.com:
+//         var xhr = new XMLHttpRequest();
+//         xhr.onreadystatechange = function() {
+//             if (xhr.readyState === 4 && xhr.status === 200) {
+//             var turnServer = JSON.parse(xhr.responseText);
+//             console.log('Got TURN server: ', turnServer);
+//             pcConfig.iceServers.push({
+//                 'urls': 'turn:' + turnServer.username + '@' + turnServer.turn,
+//                 'credential': turnServer.password
+//             });
+//             turnReady = true;
+//             }
+//         };
+//         xhr.open('GET', turnURL, true);
+//         xhr.send();
+//     }
+// }
   
   // on stream added event, which happens when remote user pushes his stream up. then set that stream to the
   // remote stream dom
