@@ -21,9 +21,27 @@ var sdpConstraints = {
 };
 
 // socket in to server
-var socket = io.connect('https://sanketshah.local:443/main');
+
+var socket = io('https://sanketshah.local:443/main')
+
+socket.on('connect',()=>{
+    console.log(socket.id+'  starting attempt to create or join room')
     socket.emit('create or join');
-    console.log(socket.id+'  Attempted to create or join room');
+})
+// console.log(socket.id+'  starting attempt to create or join room');
+
+socket.on('create or join', ()=>{
+    navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: true
+    })
+        .then(gotStream)
+        .catch(function(e) {
+            alert('getUserMedia() error: ' + e.name);
+        });
+})
+
+
     // no room assigned now
 
     // assuming client can also listen for 'connect,'
@@ -54,7 +72,7 @@ var socket = io.connect('https://sanketshah.local:443/main');
 
 // listen for event "created", which i assume is a server side event,
 // and then set a set client who created it as initiator
-var curr;
+let curr;
 socket.on('created', (room) => {
     console.log('Created room ' + room);
     isInitiator = true;
@@ -153,14 +171,14 @@ var localVideo = document.querySelector('#localVideo');
 var remoteVideo = document.querySelector('#remoteVideo');
 
 // get local video/audio then handles it with the got stream function below
-navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: true
-})
-.then(gotStream)
-.catch(function(e) {
-    alert('getUserMedia() error: ' + e.name);
-});
+// navigator.mediaDevices.getUserMedia({
+//     audio: false,
+//     video: true
+// })
+// .then(gotStream)
+// .catch(function(e) {
+//     alert('getUserMedia() error: ' + e.name);
+// });
   
   // take the mediastream obj from getusermedia and set it to 
   // localStream var, also set the localVideo dom source to this stream object

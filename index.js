@@ -109,6 +109,7 @@ app.get('/*',(req,res,next)=>{
 //}
 //###
 const nsp = socketIO.of('/main')
+var arrWrtcRoomNames = [];
 
 nsp.use((socket,next)=>{
     socket.handshake.user=reqFbid;
@@ -141,12 +142,11 @@ nsp.on("connection", (socket)=> {
         let currentRoomName = curr
         socket.to(currentRoomName).emit('message', message);
     });
-
+    
     socket.on('create or join', ()=>{
+        socket.emit('create or join');
         log('Received request to create or join room ');
 
-        let arrWrtcRoomNames = ['room1'];
-        
         // socket.id necessary to send to client? prob no
         const joinRoomToFill = (name) => {
             log('Client ID ' + socket.id + ' joined room to fill ' + name);
@@ -176,7 +176,7 @@ nsp.on("connection", (socket)=> {
             return roomName = prefix + suffix; 
         };
         const findRoom = () => {
-            var room;
+            log('roomArry',arrWrtcRoomNames);
             var openRoom = 
                 arrWrtcRoomNames.find(
                     (name)=>{
